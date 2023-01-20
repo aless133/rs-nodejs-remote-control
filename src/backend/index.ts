@@ -2,6 +2,7 @@ import { Writable } from "node:stream";
 import { WebSocket, WebSocketServer } from "ws";
 import connectNav from "./nav";
 import connectDraw from "./draw";
+import connectPS from "./ps";
 
 export const backend = (port: number) => {
   console.log("Hello! I'm backend on", port);
@@ -22,6 +23,7 @@ export const backend = (port: number) => {
 
     const nav = connectNav(answers);
     const draw = connectDraw(answers);
+    const ps = connectPS(answers);
 
     ws.on("message", (message: Buffer) => {
       console.log("\nws.Received message", message.toString());
@@ -30,6 +32,8 @@ export const backend = (port: number) => {
         nav.push({ cmd: cmd[0], arg: cmd[1] });
       } else if (["draw_square", "draw_rectangle", "draw_circle"].includes(cmd[0])) {
         draw.push({ cmd: cmd[0], arg1: cmd[1], arg2: cmd[2] });
+      } else if (["prnt_scrn"].includes(cmd[0])) {
+        ps.push({ cmd: cmd[0] });
       }
     });
   });
