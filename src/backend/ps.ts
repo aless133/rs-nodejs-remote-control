@@ -38,6 +38,14 @@ const printScreen = async () => {
   let ret = "";
   try {
     const r = new Region(Math.max(0, center.x - w / 2), Math.max(0, center.y - w / 2), w, w);
+    const sw = await screen.width();
+    const sh = await screen.height();
+    if (r.left + r.width > sw) {
+      r.left = sw - r.width;
+    }
+    if (r.top + r.height > sh) {
+      r.top = sh - r.width;
+    }
     const fullname = await screen.captureRegion(filename, r);
     const imageData = await readFile(fullname, "base64");
     unlink(fullname); //await
@@ -46,5 +54,18 @@ const printScreen = async () => {
     console.error("error with printScreen", err);
   }
 
+  // const image = await screen.grabRegion(new Region(center.x - w / 2, center.y - w / 2, w, w));
+
+  // fs.writeFile("screenshot.png", image.data, (error) => {
+  //   if (error) {
+  //     console.error(error);
+  //     return;
+  //   }
+
+  //   console.log("Image saved to file.");
+  // });
+
+  // console.log(image.data.toString());
+  // return image.data.toString("base64");
   return ret;
 };
