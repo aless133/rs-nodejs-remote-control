@@ -8,3 +8,8 @@ httpServer.listen(HTTP_PORT);
 const WEBSOCKET_PORT = 8080;
 console.log(`Start backend websocket on the ${WEBSOCKET_PORT} port!`);
 backend(WEBSOCKET_PORT);
+
+process.on("SIGINT", () => {
+  console.log("Stopping...");
+  process.exit();
+});
