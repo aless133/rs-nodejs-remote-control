@@ -29,14 +29,7 @@ readableStream.on("data", async (data) => {
 });
 
 const drawRect = async (a: number, b: number) => {
-  // const start = await mouse.getPosition();
-
   await mouse.pressButton(Button.LEFT);
-
-  // await mouse.move(straightTo(new Point(start.x + a, start.y)));
-  // await mouse.move(straightTo(new Point(start.x + a, start.y + b)));
-  // await mouse.move(straightTo(new Point(start.x, start.y + b)));
-  // await mouse.move(straightTo(new Point(start.x, start.y)));
 
   await mouse.move(right(a));
   await mouse.move(down(b));

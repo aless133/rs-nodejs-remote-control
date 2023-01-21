@@ -1,6 +1,6 @@
-import { readFile, unlink } from "node:fs/promises";
 import { Writable, Readable } from "node:stream";
 import { mouse, screen, Region } from "@nut-tree/nut-js";
+import Jimp from "jimp";
 
 const readableStream = new Readable({
   read: () => {
@@ -34,7 +34,6 @@ readableStream.on("data", async (data) => {
 const printScreen = async () => {
   const w = 200;
   const center = await mouse.getPosition();
-  const filename = "prnt_scrn.png";
   let ret = "";
   try {
     const r = new Region(Math.max(0, center.x - w / 2), Math.max(0, center.y - w / 2), w, w);
@@ -46,10 +45,11 @@ const printScreen = async () => {
     if (r.top + r.height > sh) {
       r.top = sh - r.width;
     }
-    const fullname = await screen.captureRegion(filename, r);
-    const imageData = await readFile(fullname, "base64");
-    unlink(fullname); //await
-    ret = "prnt_scrn " + imageData;
+    const image = await screen.grabRegion(r);
+    const imageRGB = await image.toRGB();
+    const oImg = new Jimp({ data: imageRGB.data, width: image.width, height: image.height });
+    const imageBuffer = await oImg.getBufferAsync(Jimp.MIME_PNG);
+    ret = "prnt_scrn " + imageBuffer.toString("base64");
   } catch (err) {
     console.error("error with printScreen", err);
   }

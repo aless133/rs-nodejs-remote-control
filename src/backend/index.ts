@@ -5,12 +5,12 @@ import connectDraw from "./draw";
 import connectPS from "./ps";
 
 export const backend = (port: number) => {
-  console.log("Hello! I'm backend on", port);
+  console.log("Hello! I'm backend on http://localhost:" + port);
 
   const wss = new WebSocketServer({ port });
 
   wss.on("connection", (ws: WebSocket) => {
-    console.log("Back got connect!");
+    console.log("Backend got connect!");
 
     const answers = new Writable({
       objectMode: true,
