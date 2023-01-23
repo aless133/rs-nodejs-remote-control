@@ -8,8 +8,10 @@ export const backend = (port: number) => {
   console.log("Hello! I'm backend on http://localhost:" + port);
 
   const wss = new WebSocketServer({ port });
+  let socket: WebSocket;
 
   wss.on("connection", (ws: WebSocket) => {
+    socket = ws;
     console.log("Backend got connect!");
 
     const answers = new Writable({
@@ -37,4 +39,11 @@ export const backend = (port: number) => {
       }
     });
   });
+
+  return {
+    close: () => {
+      socket.close();
+      wss.close();
+    },
+  };
 };
