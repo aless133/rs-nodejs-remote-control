@@ -3,6 +3,7 @@
 * Frontend App
 * By default WebSocket client tries to connect to the 8080 port
 * Backend 
+* Streams is used in modules communication, that was noted by task author as fine.
 
 ## Installation
 1. Clone repo
@@ -28,3 +29,4 @@
 * Backend served @ `ws://localhost:8080` without nodemon
 
 **Note**: replace `npm` with `yarn` in `package.json` if you use yarn.
+
